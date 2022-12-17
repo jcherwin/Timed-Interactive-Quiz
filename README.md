@@ -8,7 +8,7 @@ This program utilizes different aspects of JavaScript such as:
 
 ## Link
 
-This is a link to the project hosted on GitHub Pages: []()
+This is a link to the project hosted on GitHub Pages: [https://jcherwin.github.io/Timed-Interactive-Quiz/](https://jcherwin.github.io/Timed-Interactive-Quiz/)
 
 ## Usage
 
