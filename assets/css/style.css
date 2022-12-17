@@ -1,0 +1,109 @@
+/* DECLARE VARIABLES */
+:root{
+  --light-purple: #6B5097;
+  --dark-purple: #482B69;
+}
+
+/* UNIVERSAL SELECTOR */
+*{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ELEMENT SELECTORS */
+header{
+  display: flex;
+  justify-content: space-between;
+}
+
+header a{
+  color: var(--dark-purple);
+}
+
+header a:hover{
+  color: var(--light-purple);
+}
+
+header p{
+  margin: 0;
+}
+
+main{
+  width: 33%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+h1{
+  font-size: 180%;
+  display: flex;
+}
+
+h2{
+  font-size: 160%;
+  display: flex;
+}
+
+button{
+  background-color: var(--dark-purple);
+  color: white;
+  border: black;
+  border-radius: 3px;
+  padding: 3px 10px;
+  font-size: 105%;
+}
+
+button:hover{
+  background-color: var(--light-purple);
+}
+
+/* CLASS SELECTORS */
+.result-p{
+  width: 100%;
+  border-top: lightgray 3px solid;
+  font-style: italic;
+  padding-top: 5px;
+  color: gray;
+  font-size: 110%;
+}
+
+.landing-page h1{
+  justify-content: center;
+}
+
+.landing-page p{
+  text-align: center;
+}
+
+.landing-page button{
+  display: flex;
+  margin: auto;  
+}
+
+.quiz-page button{
+  display: flex;
+  margin: 5px;
+}
+
+.results-page button{
+  display: inline;
+  margin-left: 10px;
+}
+
+.highscore-page button{
+  display: inline;
+}
+
+.highscore-page button:first-of-type{
+  margin-right: 15px;
+}
+
+/* UNIQUE/ID SELECTORS */
+#scoresLink{
+  text-decoration: none;
+}
+
+#content{
+  margin-top: 3%;
+}

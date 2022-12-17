@@ -8,7 +8,21 @@
     <link rel="stylesheet" href="assets/css/style.css" />
   </head>
   <body>
-    
+    <header>
+      <a id="scoresLink" href="">View Highscores</a>
+      <p>Time: <span id="timer">0</span></p>
+    </header>
+    <main>
+      <section id="content" class="landing-page">
+        <h1>Coding Quiz Challenge</h1>
+        <p>
+          Try to answer the following code-related questions within the time <br>
+          limit. Keep in mind that incorrect answers will penalize your score/time <br>
+          by ten seconds!
+        </p>
+        <button id="startBtn" onclick="startQuiz()">Start Quiz</button>
+      </section>
+    </main>
     <script src="assets/js/script.js"></script>
   </body>
 </html>
