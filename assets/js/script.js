@@ -71,6 +71,7 @@ var startBtn = document.querySelector("#startBtn");
 var scoresLink = document.querySelector("#scoresLink");
 var mainContent = document.querySelector("#content");
 var timerSpan = document.querySelector("#timer");
+var resultP = document.querySelector(".result-p");
 var mainEl = document.querySelector("main");
 
 const landingPageContent = document.querySelector("#content").innerHTML;
@@ -100,6 +101,17 @@ const timer = {
   },
 };
 
+const displayResultTimer = {
+  start() {
+    this.timeoutID = setTimeout(() => {
+      resultP.style.cssText = "display:none !important";
+    }, 2000);
+  },
+  stop() {
+    clearTimeout(this.timeoutID);
+  },
+};
+
 // Governs all access to local storage 
 function accessLocalStorage(op,keyword,content){
   if(op === "get"){
@@ -115,20 +127,16 @@ function accessLocalStorage(op,keyword,content){
 
 // Contains all the actions to be taken when an answer button is clicked
 function answerEvent(result){
-  var resultCheck = document.querySelector(".result-p");
+  //var resultCheck = document.querySelector(".result-p");
   if(!result){
     if(scoreTimer >= 10){
       scoreTimer -= 10;
     }else{
       scoreTimer = 0;
     }
-    if(resultCheck == null){
-      outcomeMsg(false);
-    }
+    outcomeMsg(false);    
   }else{
-    if(resultCheck == null){
-      outcomeMsg(true);
-    }
+    outcomeMsg(true);
   }
   quizCounter--;
   var nextQuiz = QUIZ_MAX - quizCounter;
@@ -264,20 +272,19 @@ function loadLandingPage(){
 
 // Displays the result when an answer button is clicked (called in answerEvent function)
 function outcomeMsg(result){
-  var resultP = document.createElement("p");
-  resultP.setAttribute("class", "result-p");
+  displayResultTimer.stop();
+  resultP.style.cssText = "display:block !important;";
   if(result){
     resultP.innerHTML = "Correct!";
   }else{
     resultP.innerHTML = "Wrong!";
   }
 
-  mainEl.appendChild(resultP);
-  const clearResult = setTimeout(function(){document.querySelector(".result-p").remove();}, 1500);
+  displayResultTimer.start();
 }
 
-// Decided to move this code from event listener to onclick attribute because otherwise I would be nesting an addeventlistener in another function
-// when returning from the highscores page (couldn't get that to work)
+// Decided to move this code from event listener to onclick attribute because otherwise I would be nesting an addeventlistener
+// in another function when returning from the highscores page (couldn't get that to work)
 function startQuiz(){  
   writeNewQuiz(quizArray[0]);
   timer.start();  
