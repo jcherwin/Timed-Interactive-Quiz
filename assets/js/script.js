@@ -64,7 +64,7 @@ const QUIZ_MAX = quizArray.length;
 const HIGHSCORES = "highscores";
 
 var quizCounter = quizArray.length;  //dynamic variable that is adjusted when a question is answered
-var scoreTimer = SCORE_MAX;  //timer 
+var scoreCounter = SCORE_MAX;  //timer 
 
 // Query DOM elements
 var startBtn = document.querySelector("#startBtn");
@@ -77,16 +77,16 @@ var mainEl = document.querySelector("main");
 const landingPageContent = document.querySelector("#content").innerHTML;
 
 // Object that stores all functions related to the main score timer
-const timer = {
+const scoreTimer = {
   start() {
-    scoreTimer = SCORE_MAX;
-    scoreTimer++;
+    scoreCounter = SCORE_MAX;
+    scoreCounter++;
     this.timeoutID = setInterval(() => {
-      if(scoreTimer > 1){
-        scoreTimer--;
-        this.updateSpan(scoreTimer);
+      if(scoreCounter > 1){
+        scoreCounter--;
+        this.updateSpan(scoreCounter);
       }else{
-        scoreTimer = 0;
+        scoreCounter = 0;
         this.updateSpan(0);      
         clearInterval(this.timeoutID);
         loadResults();      
@@ -129,10 +129,10 @@ function accessLocalStorage(op,keyword,content){
 function answerEvent(result){
   //var resultCheck = document.querySelector(".result-p");
   if(!result){
-    if(scoreTimer >= 10){
-      scoreTimer -= 10;
+    if(scoreCounter >= 10){
+      scoreCounter -= 10;
     }else{
-      scoreTimer = 0;
+      scoreCounter = 0;
     }
     outcomeMsg(false);    
   }else{
@@ -144,8 +144,8 @@ function answerEvent(result){
   if(quizCounter > 0){
     writeNewQuiz(quizArray[nextQuiz]);
   }else{
-    timer.stop();
-    timer.updateSpan(scoreTimer);
+    scoreTimer.stop();
+    scoreTimer.updateSpan(scoreCounter);
     loadResults();
   }
 }
@@ -179,7 +179,7 @@ function loadResults(){
   mainContent.appendChild(h2);
 
   var pEl = document.createElement("p");
-  pEl.innerHTML = "Your final score is " + scoreTimer + ".";
+  pEl.innerHTML = "Your final score is " + scoreCounter + ".";
   mainContent.appendChild(pEl);
 
   var formEl = document.createElement("form");
@@ -206,7 +206,7 @@ function loadResults(){
   submitBtn.addEventListener("click", function(event){
     event.preventDefault(); 
 
-    var highscore = inputEl.value + " - " + scoreTimer;
+    var highscore = inputEl.value + " - " + scoreCounter;
     highscoreArray.push(highscore);
     highscoreArray = JSON.stringify(highscoreArray);
 
@@ -221,8 +221,8 @@ function loadHighscores(event){
   event.preventDefault();  
   clearMain();
   mainContent.setAttribute("class","highscore-page");
-  timer.stop();
-  timer.updateSpan(0);
+  scoreTimer.stop();
+  scoreTimer.updateSpan(0);
 
   var h1 = document.createElement("h1");
   h1.innerHTML = "Highscores";
@@ -236,7 +236,7 @@ function loadHighscores(event){
       for(var x in highscoreArray){
         var li = document.createElement("li");
         var p = document.createElement("p");
-        li.innerHTML = highscoreArray[x];
+        p.innerHTML = highscoreArray[x];
         li.appendChild(p);
         ol.appendChild(li);
       }
@@ -252,6 +252,7 @@ function loadHighscores(event){
   mainContent.appendChild(backBtn);
   mainContent.appendChild(clearBtn);
 
+  // Adds event listeners for Back and Clear buttons
   backBtn.addEventListener("click", function(){
     loadLandingPage();
   });
@@ -272,7 +273,7 @@ function loadLandingPage(){
 
 // Displays the result when an answer button is clicked (called in answerEvent function)
 function outcomeMsg(result){
-  displayResultTimer.stop();
+  displayResultTimer.stop();  //clears timer so that an old/existing timer won't interrupt a new one
   resultP.style.cssText = "display:block !important;";
   if(result){
     resultP.innerHTML = "Correct!";
@@ -287,10 +288,10 @@ function outcomeMsg(result){
 // in another function when returning from the highscores page (couldn't get that to work)
 function startQuiz(){  
   writeNewQuiz(quizArray[0]);
-  timer.start();  
+  scoreTimer.start();  
 }
 
-// Accepts quiz object and 
+// Accepts quiz object and writes its information to html elements and displays them on the page
 function writeNewQuiz(quiz){
   clearMain();
   mainContent.setAttribute("class","quiz-page");
@@ -299,22 +300,22 @@ function writeNewQuiz(quiz){
   h2.innerHTML = quiz.question;
   mainContent.appendChild(h2);
 
-  var aText = [quiz.a1Text,quiz.a2Text,quiz.a3Text,quiz.a4Text];  //array of answers text to write to buttons
-  var aCor = quiz.aCorrect - 1;  //translates human readable correct answer number to a zero indexed number 
+  var answerText = [quiz.a1Text,quiz.a2Text,quiz.a3Text,quiz.a4Text];  //array of answers text to write to buttons
+  var answerCorrect = quiz.aCorrect - 1;  //translates human readable correct answer number to a zero indexed number 
 
-  for(var x in aText){
-    var ansBtn = document.createElement("button");
-    ansBtn.innerHTML = (Number(x)+1) + ". " + aText[x];
-    if(x == aCor){
-      ansBtn.addEventListener("click", function(){
+  for(var x in answerText){
+    var answerBtn = document.createElement("button");
+    answerBtn.innerHTML = (Number(x)+1) + ". " + answerText[x];
+    if(x == answerCorrect){
+      answerBtn.addEventListener("click", function(){
         answerEvent(true);
       });
     }else{
-      ansBtn.addEventListener("click", function(){
+      answerBtn.addEventListener("click", function(){
         answerEvent(false)
       });       
     }   
-    mainContent.appendChild(ansBtn);
+    mainContent.appendChild(answerBtn);
   }
 }
 
